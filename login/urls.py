@@ -10,6 +10,7 @@ urlpatterns = [
     path('authenticateUser',views.userAuthentication),
     path('saveUser',views.saveUser),
     path('home',views.home),
+    path('gallery/', include('gallery.urls')),
 ]
 if settings.DEBUG:
         urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

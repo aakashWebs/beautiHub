@@ -1,0 +1,27 @@
+{%  load static %}
+<footer class="bg-light text-center text-lg-start">
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2020 Copyright:
+      <a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+    </div>
+    <!-- Copyright -->
+  </footer>
+    <!-- MDB -->
+    <script type="text/javascript" src=""{% static 'js/mdb.min.js' %}"></script>
+    <!-- Custom scripts -->
+    <!-- MDB -->
+<script  type="text/javascript"  src="{% static 'js/6.3.0_mdb.min.js' %}" ></script>
+
+    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery_3.6.4_jquery.min.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            $('.nav-link').click(function(){
+                 $(".nav-link.active").removeClass('active text-primary');
+                 $(this).addClass('active text-primary');
+            });
+        });
+    </script>
+</body>
+</html>
