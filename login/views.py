@@ -22,7 +22,7 @@ def userAuthentication(request):
 
         if user is not None:
             messages.success(request,"User found successfully")
-            return redirect('home')
+            return redirect('gallery/')
         else:
             messages.error(request,"Invalid username or password")
             return redirect('/login')
