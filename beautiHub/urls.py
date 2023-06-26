@@ -24,6 +24,6 @@ urlpatterns = [
     path('webservice',include('webservice.urls')),
     path('gallery/',include('gallery.urls')),
     path('api-auth', include('rest_framework.urls')),
-    path('api',include('api.urls')),
+    path('api/',include('api.urls')),
     path('favicon.ico', serve, {'document_root': 'static/images', 'path': 'favicon.ico'}),
 ]

@@ -25,7 +25,15 @@
     <!-- Custom styles -->
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+<!--<script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>-->
+<script  type="text/javascript"  src="{% static 'js/6.3.0_mdb.min.js' %}" ></script>
+<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery_3.6.4_jquery.min.js' %}"></script>
   <style>
+  .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+    max-width: 100%;
+  }
     .grid-container {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -77,16 +85,16 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link text-primary active" href="#">Home</a>
+              <a class="nav-link text-primary active" href="/gallery">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">About</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Add Profiles</a>
+              <a class="nav-link" href="../gallery/add_profiles">Add Profiles</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Contact</a>
+              <a class="nav-link" href="../gallery/user_list">Users</a>
             </li>
           </ul>
         </div>
