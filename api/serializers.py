@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from login.models import Attachments
+from gallery.models import Profile
 
 class ProfileSerializer(serializers.Serializer):
    entity_id = serializers.IntegerField()
@@ -11,3 +12,9 @@ class userSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email']
+
+class profileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        # fields = '__all__'
+        fields = ['id','name','age','description']
