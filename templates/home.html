@@ -3,8 +3,6 @@
 
 {% block content %}
  {%  load static %}
-
-
 {% with attachments=data.attachments  %}
 
     <div class="grid-container mt-5 p-2" style="min-height: calc(100vh - 58px);">
@@ -13,20 +11,20 @@
                   <div class="grid-item">
                     <img src="/media/{{value}}" alt="Image {{key}}">
                   </div>
-                  <div class="grid-item">
-                    <img src="{% static 'images/dhruvi.jpeg' %}" alt="Image 1">
-                  </div>
-                  <div class="grid-item">
-                    <img src="{% static 'images/ay.jpeg' %}" alt="Image 2">
-                  </div>
-                  <div class="grid-item">
-                    <img src="{% static 'images/ds.jpeg' %}" alt="Image 3">
-                  </div>
-                  <div class="grid-item">
-                    <img src="{% static 'images/dsh.jpeg' %}" alt="Image 3">
-                  </div>
             {% endfor %}
         {% endfor %}
+          <div class="grid-item">
+                    <img src="{% static 'images/dhruvi.jpeg' %}" alt="Image 1">
+          </div>
+          <div class="grid-item">
+            <img src="{% static 'images/ay.jpeg' %}" alt="Image 2">
+          </div>
+          <div class="grid-item">
+            <img src="{% static 'images/ds.jpeg' %}" alt="Image 3">
+          </div>
+          <div class="grid-item">
+            <img src="{% static 'images/dsh.jpeg' %}" alt="Image 3">
+          </div>
       <!-- Add more grid items with images as needed -->
     </div>
 {% endwith %}
