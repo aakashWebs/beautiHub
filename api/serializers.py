@@ -18,3 +18,6 @@ class profileSerializer(serializers.ModelSerializer):
         model = Profile
         # fields = '__all__'
         fields = ['id','name','age','description']
+class userLoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.IntegerField()

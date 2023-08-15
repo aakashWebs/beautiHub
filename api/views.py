@@ -4,11 +4,15 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth.models import User
-from .serializers import userSerializer,ProfileSerializer,profileSerializer
+from .serializers import userSerializer, ProfileSerializer, profileSerializer,userLoginSerializer
 from login.models import Attachments
 from rest_framework.exceptions import APIException, NotFound
 from gallery.models import Profile
 from collections import defaultdict
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import authenticate
+
+
 
 import json
 
@@ -55,12 +59,70 @@ def updateUser(request,pk):
 
 @api_view(['GET','POST'])
 def getProfileList(request):
-    profiles = Profile.objects.all()
-    id_list = list(profiles.values_list('id', flat=True))
-    values_list = Attachments.objects.filter(entity_id__in=id_list).filter(entity_code='profile').filter(profile_image_url__isnull=False).values('entity_id', 'profile_image_url')
-    serializer = profileSerializer(profiles, many=True)
-    attachment_list = defaultdict(list)
-    for val in values_list:
-        attachment_list[val['entity_id']].append(val['profile_image_url'])
-    data = {'profile_list':serializer.data,'attachments':attachment_list}
-    return Response(data)
+    data = []
+    try:
+        profiles = Profile.objects.all()
+        settings = {'success': 1, 'message': 'Data Found Successfully'}
+    except Profile.DoesNotExist:
+        profiles = None
+        settings = {'success': 0,'message': 'Data Not Found'}
+
+    if profiles is not None:
+        serializer = profileSerializer(profiles, many=True)
+        data       = serializer.data
+    return_obj = {'settings':settings,'data':data}
+    return Response(return_obj)
+
+@api_view(['GET','POST'])
+def getProfile(request, id):
+    profile = get_object_or_404(Profile, id=id)
+    settings = {'success': 0, 'message': 'Data Not Found'}
+    data = []
+    if profile is not None:
+        serializer = profileSerializer(profile)
+        data       = serializer.data
+        settings = {'success': 1, 'message': 'Data Found Successfully'}
+    return_obj = {'settings':settings,'data':data}
+    return Response(return_obj)
+@api_view(['GET','POST'])
+def getAttachments(request):
+    data = []
+    entity_id   = request.query_params.get('entity_id')
+    entity_code = request.query_params.get('entity_code')
+    attachments = Attachments.objects.filter(entity_id=entity_id, entity_code=entity_code,
+                                             profile_image_url__isnull=False).values('profile_image_url')
+    settings = {'success':0, 'message': 'Data Not Found'}
+    if attachments:
+        attachments_list = list(attachments)
+        img_arr = defaultdict(list)
+        # for i in attachments_list:
+        #     img_arr[i['entity_id']].append(i['profile_image_url'])
+        data = attachments_list
+        settings = {'success': 1, 'message': 'Data Found Successfully'}
+
+    return_obj = {'settings':settings,'data': data}
+    return Response(return_obj)
+@api_view(['GET','POST'])
+def userLogin(request):
+        # username = request.query_params.get('username')
+        # password = request.query_params.get('password')
+
+        user_data = userLoginSerializer(data=request.query_params)
+        if user_data.is_valid():
+            # Validated data is available in serializer.validated_data
+            username = user_data.validated_data['username']
+            password = user_data.validated_data['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                settings = {'success': 1, 'message': 'Data Found Successfully..!'}
+                user_obj = User.objects.get(username= user_data.data['username'])
+                refresh = RefreshToken.for_user(user_obj)
+                data = [{'access_token':str(refresh.access_token)}]
+            else:
+                settings = {'success': 0, 'message': 'Data Not Found'}
+                data = []
+
+            return_data = {'settings':settings,'data':data}
+            return Response(return_data)
+        else:
+            return Response(user_data.errors, status=400)
