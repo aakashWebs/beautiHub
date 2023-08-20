@@ -1,8 +1,11 @@
 # app1/utils.py
 import requests
+from decouple import config
+base_url = config("BASE_URL")
+
 def callRestApi(api_name,api_params = {}):
     # Your common function logic here
-    api_url = 'http://127.0.0.1:8000/api/'+api_name
+    api_url = base_url+api_name
     response = requests.get(api_url, params=api_params)
     response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
     data_from_api = response.json()

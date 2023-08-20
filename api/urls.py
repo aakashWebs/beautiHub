@@ -11,7 +11,7 @@ urlpatterns = [
     path('get_user_profile/<str:id>/',getUserProfile),
     path('update_user_profile/<str:pk>/',updateUser),
     path('get_profile_list/',getProfileList),
-    path('get_profile/<int:id>/',getProfile),
+    path('get_profile',getProfile),
     path('get_attachments',getAttachments),
     path('user_login',userLogin)
 ]

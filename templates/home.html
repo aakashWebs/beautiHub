@@ -1,167 +1,16 @@
 
 {% extends 'base.html' %}
 {% block content %}
+{%  load static %}
 <style>
-    /* Styling for the modal popup */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 100000000000000000000000000000;
-  padding-top: 50px;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgb(10 10 10);
-}
-
-.modal-content {
-  max-width: 100%;
-  max-height: 100%;
-  width:auto;
-  height:auto;
-  margin: auto;
-  display: block;
-}
-
-.close {
-  color: #fff;
-  font-size: 30px;
-  font-weight: bold;
-  position: absolute;
-  top: 15px;
-  right: 35px;
-  cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-  color: #f00;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.prev,
-.next {
-  color: #fff;
-  font-size: 30px;
-  font-weight: bold;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-}
-
-.next {
-  right: 15px;
-}
-
-.prev {
-  left: 15px;
-}
-
-img{
-hover:pointer;
-}
-</style>
-<style>
-    /* styles.css */
-body {
-    background-color: #f5f5f5;
-}
-
-.colorful-profile-strip {
-    width: 100%;
-    background-image: linear-gradient(to right, #ff9a9e, #fad0c4); /* Gradient background */
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 16px;
-}
-
-.card-body {
-    animation: fadeInUp 1s; /* Animation for fade-in effect */
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
+    .custom_modal{
+        background:none !important;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    .custom_modal .modal-content{
+        width:100% !important;
     }
-}
-
-.row {
-    align-items: center;
-}
-
-.profile-image img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    border: 3px solid #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.profile-info {
-    margin-left: 20px;
-    color: #2c3e50;
-}
-
-.profile-name {
-    margin: 0;
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.profile-age, .profile-email {
-    margin: 0;
-    font-size: 14px;
-}
-
-.profile-description {
-    margin: 8px 0 0;
-    font-size: 14px;
-}
-
-.profile-actions {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 16px;
-}
-
-.profile-actions button {
-    margin-top: 8px;
-}
-
-/* styles.css */
-/* Add styling for the name */
-.stylish-name {
-    color: #3366cc; /* Blue color for the name */
-    font-size: 28px;
-    font-weight: bold;
-}
-
-/* Add styling for the age and email */
-.stylish-info {
-    color: #777; /* Gray color for age and email */
-    font-size: 16px;
-    margin-bottom: 4px; /* Add some space between each line */
-}
-
-/* Add styling for the description */
-.stylish-description {
-    font-size: 14px;
-    line-height: 1.4; /* Increase the line height for better readability */
-}
-
-
 </style>
-
- {%  load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
 <div class="container mt-5 mb-6 ">
     <div class="card colorful-profile-strip">
         <div class="card-body">
@@ -182,7 +31,7 @@ body {
 
                     </div>
                 <div class="col-3 profile-actions">
-                        <button class="btn btn-primary">Edit Profile</button>
+                        <button  type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#editProfileModal" >Edit Profile</button>
                         <button class="btn btn-secondary">Upload Image</button>
                 </div>
                 </div>
@@ -200,68 +49,63 @@ body {
                     </div>
         {% endfor %}
                 </div>
-<!--          <div class="grid-item">-->
-<!--                    <img src="{% static 'images/dhruvi.jpeg' %}" alt="Image 1" class="image-popup">-->
-<!--          </div>-->
-<!--          <div class="grid-item">-->
-<!--            <img src="{% static 'images/ay.jpeg' %}" alt="Image 2" class="image-popup">-->
-<!--          </div>-->
-<!--          <div class="grid-item">-->
-<!--            <img src="{% static 'images/ds.jpeg' %}" alt="Image 3" class="image-popup">-->
-<!--          </div>-->
-<!--          <div class="grid-item">-->
-<!--            <img src="{% static 'images/dsh.jpeg' %}" alt="Image 3" class="image-popup">-->
-<!--          </div>-->
-
-      <!-- Add more grid items with images as needed -->
     </div>
         </div>
     </div>
 </div>
     <div id="myModal" class="modal">
-      <span class="close">&times;</span>
-      <img class="modal-content" id="imgModal">
+      <span class="img-modal-close close">&times;</span>
+      <img class="modal-content img-modal-content" id="imgModal">
       <span class="prev">&#10094;</span>
         <span class="next">&#10095;</span>
     </div>
-
-<script>
-$(document).ready(function() {
-  // Image index for navigation
-  var currentImageIndex;
-
-  // Show the modal and set the clicked image
-  $(".image-popup").click(function() {
-    var imgSrc = $(this).attr("src");
-    currentImageIndex = $(".image-popup").index(this);
-    console.log(currentImageIndex);
-    showImage(imgSrc);
-  });
-
-  // Show the previous image when previous icon is clicked
-  $(".prev").click(function() {
-    currentImageIndex = (currentImageIndex - 1 + $(".image-popup").length) % $(".image-popup").length;
-    var imgSrc = $(".image-popup").eq(currentImageIndex).attr("src");
-    showImage(imgSrc);
-  });
-
-  // Show the next image when next icon is clicked
-  $(".next").click(function() {
-    currentImageIndex = (currentImageIndex + 1) % $(".image-popup").length;
-    var imgSrc = $(".image-popup").eq(currentImageIndex).attr("src");
-    showImage(imgSrc);
-  });
-
-  // When the close button in the modal is clicked, hide the modal
-  $(".close").click(function() {
-    $("#myModal").css("display", "none");
-  });
-
-  // Function to show the modal and set the image source
-  function showImage(imgSrc) {
-    $("#myModal").css("display", "block");
-    $("#imgModal").attr("src", imgSrc);
-  }
-});
-</script>
+<div class="row">
+<div class="modal fade modal-xl custom_modal" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" placeholder="Enter name">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="age" class="form-label">Age</label>
+                            <input type="number" class="form-control" id="age" placeholder="Enter age">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="email" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter email">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" rows="3" placeholder="Enter description"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="profileImage" class="form-label">Profile Image</label>
+                            <input type="file" class="form-control" id="profileImage">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script src="{% static 'js/home.js' %}"></script>
 {% endblock %}

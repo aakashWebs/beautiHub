@@ -54,6 +54,10 @@ def userProfile(request,id):
         'entity_id': id,
         'entity_code': 'profile'
     }
+    user_param = {
+        'user_id':id
+    }
+    user_data = callRestApi('get_profile',user_param)
     response = callRestApi('get_attachments', api_params)
     data = []
     if response['settings']['success']:
