@@ -53,7 +53,9 @@
       <thead>
       <tr>
         <th class="text-center">Name</th>
-        <th class="text-center">Email</th>
+        <th class="text-center">Age</th>
+        <th class="text-center">Description</th>
+        <th class="text-center">Action</th>
       </tr>
       </thead>
       <tbody>
@@ -87,49 +89,59 @@
     </div>
   </div>
 
-<!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
-<!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>-->
-<!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>-->
-<!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.2/js/mdb.min.js"></script>-->
+<script>
+let users_list = [];
+let paze_size   = 4;
+let page_number = 1;
+$(document).ready(function(){
+const csrfToken = "{{ csrf_token }}";
+let getUsers=()=>{
+      $.ajax({
+        method:'POST',
+        url:`${base_url}/gallery/get_users`,
+        headers: {
+            'X-CSRFToken': csrfToken  // Include the CSRF token in the request header
+        },
+        dataType: 'json',
+        data:{},
+        success:function(response){
+              console.log('response',);
+              let total_users = response.data.length;
+              users_list  = response.data;
+              generateTableRows(page_number,paze_size);
+      }
+    });
+    }
+getUsers();
+let createTable=(tbody)=>{
+     $("#user-table tbody").html(tbody);
+  }
 
-  <script>
-    // Sample user data
-    let pageSize = 5;
-    const users = [
-      { name: "John Doe", email: "john@example.com" },
-      { name: "Jane Smith", email: "jane@example.com" },
-      { name: "Mark Johnson", email: "mark@example.com" },
-      { name: "Sarah Adams", email: "sarah@example.com" },
-      { name: "Michael Davis", email: "michael@example.com" },
-      { name: "Emily Wilson", email: "emily@example.com" },
-      { name: "David Thompson", email: "david@example.com" },
-      { name: "Amy Walker", email: "amy@example.com" },
-      { name: "Brian Martin", email: "brian@example.com" },
-      { name: "Jennifer Turner", email: "jennifer@example.com" }
-    ];
-
-    // Function to generate table rows
-    function generateTableRows(pageNumber, pageSize) {
+let generateTableRows=(pageNumber, pageSize)=>{
       const startIndex = (pageNumber - 1) * pageSize;
       const endIndex = startIndex + pageSize;
-      const pageUsers = users.slice(startIndex, endIndex);
+      const pageUsers = users_list.slice(startIndex, endIndex);
 
       let tableRows = '';
+      let count = 1;
       for (const user of pageUsers) {
         tableRows += `<tr>
                         <td class="text-center">${user.name}</td>
-                        <td class="text-center">${user.email}</td>
+                        <td class="text-center">${user.age}</td>
+                        <td class="text-center">${user.description}</td>
+                        <td class="text-center"><a href="../gallery/user_profile/${user.id}" class="btn btn-primary user_profile" data-id='${user.id}'>View Gallery</a></td>
                       </tr>`;
+        count++;
       }
-      return tableRows;
+      //return tableRows;
+      createTable(tableRows);
     }
 
-    // Function to update table and buttons based on current page
-    function updateTableAndButtons() {
+let updateTableAndButtons=()=>{
       const currentPage = parseInt($(".pagination .active .page-link").text());
       const totalPages = parseInt($(".pagination .page-item").last().prev().text());
-
-      $("#user-table tbody").html(generateTableRows(currentPage, pageSize));
+      generateTableRows(currentPage, paze_size);
+     // $("#user-table tbody").html(generateTableRows(currentPage, pageSize));
 
       // Update Previous button
       if (currentPage === 1) {
@@ -146,18 +158,15 @@
       }
     }
 
-    // Initial table and pagination setup
-    updateTableAndButtons();
-
-    // Pagination click event
-    $(".pagination").on("click", ".page-link", function (e) {
+ $(".pagination").on("click", ".page-link", function (e) {
       e.preventDefault();
       $(".pagination .active").removeClass("active");
       $(this).parent().addClass("active");
       updateTableAndButtons();
     });
 
-    // Previous button click event
+
+ // Previous button click event
     $("#previous-btn").on("click", function (e) {
       e.preventDefault();
       const currentPage = parseInt($(".pagination .active .page-link").text());
@@ -178,5 +187,39 @@
         updateTableAndButtons();
       }
     });
+
+});
+
+
+
+    // Sample user data
+    let pageSize = 5;
+    const users = [
+      { name: "John Doe", email: "john@example.com" },
+      { name: "Jane Smith", email: "jane@example.com" },
+      { name: "Mark Johnson", email: "mark@example.com" },
+      { name: "Sarah Adams", email: "sarah@example.com" },
+      { name: "Michael Davis", email: "michael@example.com" },
+      { name: "Emily Wilson", email: "emily@example.com" },
+      { name: "David Thompson", email: "david@example.com" },
+      { name: "Amy Walker", email: "amy@example.com" },
+      { name: "Brian Martin", email: "brian@example.com" },
+      { name: "Jennifer Turner", email: "jennifer@example.com" }
+    ];
+
+    // Function to generate table rows
+
+
+    // Function to update table and buttons based on current page
+
+
+    // Initial table and pagination setup
+    //updateTableAndButtons();
+
+    // Pagination click event
+
+
+
+
   </script>
 {% endblock %}

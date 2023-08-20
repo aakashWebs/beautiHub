@@ -1,31 +1,111 @@
 
 {% extends 'base.html' %}
-
 {% block content %}
- {%  load static %}
-{% with attachments=data.attachments  %}
+{%  load static %}
+<style>
+    .custom_modal{
+        background:none !important;
+    }
+    .custom_modal .modal-content{
+        width:100% !important;
+    }
+</style>
+<link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+<div class="container mt-5 mb-6 ">
+    <div class="card colorful-profile-strip">
+        <div class="card-body">
+            <div class="row">
+                    <div class="col-1">
+                        <div class="profile-image">
+                            <!-- Your profile image here -->
+                            <img src="http://127.0.0.1:8000/static/images/ay.jpeg" alt="Profile Image">
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div class="profile-info">
+                            <h3 class="profile-name stylish-name">John Doe</h3>
+                            <p class="profile-age stylish-info">30 years old</p>
+                            <p class="profile-email stylish-info">john.doe@example.com</p>
+                            <p class="profile-description stylish-description">A brief description about yourself.</p>
+                        </div>
 
-    <div class="grid-container mt-5 p-2" style="min-height: calc(100vh - 58px);">
-        {% for key,values in attachments.items %}
-            {% for value in values %}
-                  <div class="grid-item">
-                    <img src="/media/{{value}}" alt="Image {{key}}">
-                  </div>
-            {% endfor %}
-        {% endfor %}
-          <div class="grid-item">
-                    <img src="{% static 'images/dhruvi.jpeg' %}" alt="Image 1">
-          </div>
-          <div class="grid-item">
-            <img src="{% static 'images/ay.jpeg' %}" alt="Image 2">
-          </div>
-          <div class="grid-item">
-            <img src="{% static 'images/ds.jpeg' %}" alt="Image 3">
-          </div>
-          <div class="grid-item">
-            <img src="{% static 'images/dsh.jpeg' %}" alt="Image 3">
-          </div>
-      <!-- Add more grid items with images as needed -->
+                    </div>
+                <div class="col-3 profile-actions">
+                        <button  type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#editProfileModal" >Edit Profile</button>
+                        <button class="btn btn-secondary">Upload Image</button>
+                </div>
+                </div>
+        </div>
     </div>
-{% endwith %}
+    <div class="card mt-2">
+        <div class="card-body">
+            <div class="grid-container p-2" style="min-height: calc(100% - 88px);">
+                <div class="row">
+        {% for value in data %}
+                    <div class="col-2">
+                      <div class="grid-item">
+                        <img src="/media/{{value.profile_image_url}}" alt="Image {{loop.counter}}" class="image-popup">
+                      </div>
+                    </div>
+        {% endfor %}
+                </div>
+    </div>
+        </div>
+    </div>
+</div>
+    <div id="myModal" class="modal">
+      <span class="img-modal-close close">&times;</span>
+      <img class="modal-content img-modal-content" id="imgModal">
+      <span class="prev">&#10094;</span>
+        <span class="next">&#10095;</span>
+    </div>
+<div class="row">
+<div class="modal fade modal-xl custom_modal" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" placeholder="Enter name">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="age" class="form-label">Age</label>
+                            <input type="number" class="form-control" id="age" placeholder="Enter age">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="email" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter email">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" rows="3" placeholder="Enter description"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="profileImage" class="form-label">Profile Image</label>
+                            <input type="file" class="form-control" id="profileImage">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script src="{% static 'js/home.js' %}"></script>
 {% endblock %}

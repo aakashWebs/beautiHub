@@ -25,7 +25,9 @@
     <!-- Custom styles -->
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-
+<script>
+  const base_url = '{{ request.scheme }}://{{ request.get_host }}';
+</script>
 <!--<script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>-->
 <script  type="text/javascript"  src="{% static 'js/6.3.0_mdb.min.js' %}" ></script>
 <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
@@ -46,8 +48,9 @@
 
       .grid-item img {
         width: 100%;
-        height: auto;
+        height: 260px;
         border-radius: 15%;
+        cursor:pointer;
       }
   </style>
 </head>
@@ -78,10 +81,6 @@
       </form>
      <nav class="navbar navbar-expand-lg " style="--mdb-navbar-box-shadow:0;">
       <div class="container">
-<!--        <a class="navbar-brand" href="#">Logo</a>-->
-<!--        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">-->
-<!--          <span class="navbar-toggler-icon"></span>-->
-<!--        </button>-->
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
@@ -94,7 +93,7 @@
               <a class="nav-link" href="../gallery/add_profiles">Add Profiles</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="../gallery/user_list">Users</a>
+              <a class="nav-link" href="../../gallery/user_list">Users</a>
             </li>
           </ul>
         </div>
