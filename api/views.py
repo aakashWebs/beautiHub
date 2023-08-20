@@ -74,8 +74,9 @@ def getProfileList(request):
     return Response(return_obj)
 
 @api_view(['GET','POST'])
-def getProfile(request, id):
-    profile = get_object_or_404(Profile, id=id)
+def getProfile(request):
+    user_id = request.query_params.get('user_id')
+    profile = get_object_or_404(Profile, id=user_id)
     settings = {'success': 0, 'message': 'Data Not Found'}
     data = []
     if profile is not None:
