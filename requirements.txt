@@ -2,5 +2,13 @@ asgiref==3.6.0
 backports.zoneinfo==0.2.1
 Django==4.1.7
 sqlparse==0.4.3
+django-prometheus==2.1.0
+prometheus-client==0.9.0
 
 mysql-connector-python
+djangorestframework
+djangorestframework-simplejwt
+requests
+python-decouple
+mysqlclient
+
