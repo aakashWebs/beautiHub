@@ -17,8 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from django.views.static import serve
+from beautiHub.middleware import metrics
+
 
 urlpatterns = [
+    path('metrics/', metrics),
     path('admin/', admin.site.urls),
     path('',include('login.urls')),
     path('webservice',include('webservice.urls')),

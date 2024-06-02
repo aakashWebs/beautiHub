@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-2^*&-f8#6-!44z2mid_m*w+^k!pca5*8k(b^r2)u98)fsw5!)h
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0','127.0.0.1','localhost','app','mysql_exporter']
 
 
 # Application definition
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'beautiHub.middleware.PrometheusBeforeMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -55,6 +56,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'beautiHub.middleware.PrometheusAfterMiddleware',
+
 ]
 
 ROOT_URLCONF = 'beautiHub.urls'
@@ -94,8 +97,8 @@ DATABASES = {
         'NAME': 'django_db',
         'USER': 'aakash',
         'PASSWORD': 'aakash@123',
-        'HOST': '127.0.0.1',
-        'PORT': '3307',
+        'HOST': 'db',
+        'PORT': '3306',
     }
 }
 
@@ -137,7 +140,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-BASE_URL = 'http://127.0.0.1:8000/'
+BASE_URL = 'http://0.0.0.0:8000/'
 
 
 # Default primary key field type
